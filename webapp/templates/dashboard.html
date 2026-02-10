@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Sentiment Treemap</h2>
+
+<div style="margin-bottom:12px;">
+  <button onclick="loadMap('positive')">Most Positive</button>
+  <button onclick="loadMap('negative')">Most Negative</button>
+
+
+  <a id="download-positive" href="/download/positive" style="margin-left:12px;">
+    <button>Download Positive CSV</button>
+  </a>
+
+  <a id="download-negative" href="/download/negative">
+    <button>Download Negative CSV</button>
+  </a>
+</div>
+
+<div id="chart" style="width:100%; height:720px;"></div>
+
+<script>
+let currentMode = "positive";
+
+async function loadMap(mode){
+  currentMode = mode;
+
+  const res = await fetch(`/api/treemap?mode=${mode}`);
+  const fig = await res.json();
+  Plotly.newPlot('chart', fig.data, fig.layout);
+
+  document.getElementById("download-positive").style.display =
+    mode === "positive" ? "inline" : "none";
+
+  document.getElementById("download-negative").style.display =
+    mode === "negative" ? "inline" : "none";
+}
+
+loadMap('positive');
+</script>
+{% endblock %}

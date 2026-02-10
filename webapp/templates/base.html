@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>MarketViews Sentiment</title>
+  <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    .nav { display:flex; justify-content: space-between; margin-bottom:16px; }
+    .box { max-width: 420px; }
+    input { width:100%; padding:10px; margin:6px 0; }
+    button { padding:10px 12px; cursor:pointer; }
+    .flash { color: #0026b0; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <div><b>MarketViews Sentiment</b></div>
+    <div>
+      {% if current_user.is_authenticated %}
+        Logged in as {{ current_user.username }} |
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% endif %}
+    </div>
+  </div>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash">{{ messages[0] }}</div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</body>
+</html>
